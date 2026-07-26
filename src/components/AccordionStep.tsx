@@ -2,6 +2,8 @@ import React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useBundleStore } from "@/store/useBundleStore";
 import { Button } from "@/components/ui/button";
+import { ACCORDION } from "@/lib/constants";
+import { getNextAccordionState, formatStepHeader } from "@/lib/helpers";
 
 interface AccordionStepProps {
   stepNumber: number;
@@ -27,23 +29,27 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
   const selectedCount = getStepSelectedCount(categoryId);
 
   const toggleAccordion = () => {
-    setOpenStep(isOpen ? 0 : stepNumber);
+    setOpenStep(getNextAccordionState(openStep as number, stepNumber));
   };
 
   return (
-    <div className="w-full rounded-[10px] border border-gray-200 bg-white overflow-hidden mb-4">
+    <div 
+      style={{ borderRadius: ACCORDION.RADIUS }} 
+      className="w-full border border-gray-200 bg-white overflow-hidden mb-4"
+    >
       {/* ── Header ─────────────────────────────────────────────── */}
       <button
         type="button"
         onClick={toggleAccordion}
-        className="w-full flex items-center justify-between p-[15px] hover:bg-gray-50/50"
+        style={{ padding: ACCORDION.PADDING }}
+        className="w-full flex items-center justify-between hover:bg-gray-50/50 transition-colors"
       >
         {/* Left: icon + step label + title */}
         <div className="flex items-center gap-3">
           {icon && <span className="text-brand-heading">{icon}</span>}
-          <div className="flex flex-col">
+          <div className="flex flex-col text-left">
             <span className="text-[11px] font-bold tracking-wider text-brand-price uppercase leading-none">
-              STEP {stepNumber} OF {totalSteps}
+              {formatStepHeader(stepNumber, totalSteps)}
             </span>
             <h2 className="text-base font-bold text-brand-heading leading-snug mt-0.5">
               {title}
@@ -68,9 +74,15 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
 
       {/* ── Content ─────────────────────────────────────────────── */}
       {isOpen && (
-        <div className="border-t border-gray-100 p-[15px]">
-          {/* 2-column card grid, 1 column on mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[13px] justify-items-center">
+        <div 
+          style={{ padding: ACCORDION.PADDING }} 
+          className="border-t border-gray-100"
+        >
+          {/* 2-column card grid */}
+          <div 
+            style={{ gap: ACCORDION.GAP }} 
+            className="grid grid-cols-1 md:grid-cols-2 justify-items-center"
+          >
             {children}
           </div>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
+import { isStepperDecreaseDisabled } from "@/lib/helpers";
 
 interface QuantityStepperProps {
   quantity: number;
@@ -15,7 +16,7 @@ export const QuantityStepper: React.FC<QuantityStepperProps> = ({
   onDecrease,
   min = 0,
 }) => {
-  const isDisabled = quantity <= min;
+  const isDisabled = isStepperDecreaseDisabled(quantity, min);
 
   return (
     <div className="flex items-center gap-2 select-none">

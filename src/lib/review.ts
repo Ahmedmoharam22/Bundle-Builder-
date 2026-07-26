@@ -1,14 +1,8 @@
 import productsData from "@/data/products.json";
 import type { CartItem } from "@/store/useBundleStore";
+import { CATEGORY_MAP } from "@/lib/category";
 
 export const ALL_PRODUCTS = productsData.categories.flatMap((c) => c.products);
-
-export const CATEGORY_MAP: { name: string; ids: string[] }[] = [
-  { name: "CAMERAS", ids: ["cameras"] },
-  { name: "SENSORS", ids: ["sensors"] },
-  { name: "ACCESSORIES", ids: ["accessories", "protection"] },
-  { name: "PLAN", ids: ["plan"] },
-];
 
 export interface GroupedItem {
   categoryName: string;

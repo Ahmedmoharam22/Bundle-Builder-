@@ -39,7 +39,7 @@ interface BundleState {
 export const useBundleStore = create<BundleState>()(
   persist(
     (set, get) => ({
-      // 🚀 Seed Initial State from JSON
+      //  Seed Initial State from JSON
       items: initialSelectedItems as Record<string, CartItem>,
 
       activeVariants: {

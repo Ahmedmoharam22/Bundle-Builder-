@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import type { CartItem } from "@/store/useBundleStore";
 import type { Product } from "@/types/product";
@@ -26,9 +28,9 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
 
   return (
     <div className="flex items-center justify-between text-xs">
-      {/* Product Image & Title */}
+      {/* Product Image (36px x 36px) & Title */}
       <div className="flex items-center gap-2.5 max-w-[170px]">
-        <div className="w-9 h-9 flex-shrink-0 bg-white rounded-lg p-1 border border-gray-100 flex items-center justify-center">
+        <div className="w-9 h-9 shrink-0 bg-white rounded-lg p-1 border border-gray-100 flex items-center justify-center overflow-hidden">
           <img
             src={product.image}
             alt={displayName}
@@ -36,7 +38,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
           />
         </div>
         <div>
-          <h4 className="font-semibold text-brand-heading leading-tight">
+          <h4 className="font-semibold text-brand-heading leading-tight text-[12px]">
             {displayName}
           </h4>
           {variant && (

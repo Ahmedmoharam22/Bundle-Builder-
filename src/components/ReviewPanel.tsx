@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useReviewPanel } from "@/hooks/useReviewPanel";
 import { ReviewCategory } from "./review/ReviewCategory";
@@ -23,11 +24,11 @@ export const ReviewPanel: React.FC = () => {
   return (
     <div
       style={{
-        maxWidth: PANEL.WIDTH,
-        padding: PANEL.PADDING,
-        borderRadius: PANEL.RADIUS,
+        maxWidth: PANEL.WIDTH, // 399px
+        padding: PANEL.PADDING, // 24px
+        borderRadius: PANEL.RADIUS, // 12px
       }}
-      className="bg-brand-bg border border-gray-200/80 w-full flex flex-col sticky top-6"
+      className="bg-brand-bg border border-gray-200/80 w-full flex flex-col sticky top-6 shadow-xs"
     >
       <div>
         <div className="flex items-center justify-between">
@@ -68,7 +69,7 @@ export const ReviewPanel: React.FC = () => {
           {/* Shipping Badge */}
           <div className="flex items-center justify-between text-xs pt-3 border-t border-gray-200/80">
             <div className="flex items-center gap-2 text-brand-heading font-medium">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
                 <Truck className="w-4 h-4" />
               </div>
               <span className="font-bold">Fast Shipping</span>

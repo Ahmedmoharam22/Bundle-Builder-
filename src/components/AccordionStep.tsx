@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useBundleStore } from "@/store/useBundleStore";
@@ -41,17 +43,17 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
       <button
         type="button"
         onClick={toggleAccordion}
-        style={{ padding: ACCORDION.PADDING }}
-        className="w-full flex items-center justify-between hover:bg-gray-50/50 transition-colors"
+        style={{ padding: ACCORDION.HEADER_PADDING }}
+        className="w-full flex items-center justify-between hover:bg-gray-50/50 transition-colors cursor-pointer"
       >
         {/* Left: icon + step label + title */}
         <div className="flex items-center gap-3">
-          {icon && <span className="text-brand-heading">{icon}</span>}
+          {icon && <span className="text-brand-heading shrink-0">{icon}</span>}
           <div className="flex flex-col text-left">
             <span className="text-[11px] font-bold tracking-wider text-brand-price uppercase leading-none">
               {formatStepHeader(stepNumber, totalSteps)}
             </span>
-            <h2 className="text-base font-bold text-brand-heading leading-snug mt-0.5">
+            <h2 className="text-[16px] font-bold text-brand-heading leading-snug mt-0.5">
               {title}
             </h2>
           </div>
@@ -78,20 +80,24 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
           style={{ padding: ACCORDION.PADDING }} 
           className="border-t border-gray-100"
         >
-          {/* 2-column card grid */}
+          {/* 2-column card grid (Last card starts left and doesn't stretch) */}
           <div 
             style={{ gap: ACCORDION.GAP }} 
-            className="grid grid-cols-1 md:grid-cols-2 justify-items-center"
+            className="grid grid-cols-1 md:grid-cols-2 justify-items-start items-start"
           >
             {children}
           </div>
 
-          {/* Next button */}
+          {/* Next button (48px height, 4px radius) */}
           {nextStepTitle && (
             <div className="mt-5 flex justify-center">
               <Button
                 variant="outline"
-                className="border-brand-primary text-brand-primary hover:bg-brand-bg rounded-lg px-6 font-semibold text-xs"
+                style={{
+                  height: ACCORDION.NEXT_BTN_HEIGHT,
+                  borderRadius: ACCORDION.NEXT_BTN_RADIUS,
+                }}
+                className="border-brand-primary text-brand-primary hover:bg-brand-bg px-6 font-semibold text-xs cursor-pointer"
                 onClick={() => setOpenStep(stepNumber + 1)}
               >
                 Next: {nextStepTitle}

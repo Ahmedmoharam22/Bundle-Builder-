@@ -4,7 +4,7 @@
       "id": "cameras",
       "stepNumber": 1,
       "title": "Choose your cameras",
-      "icon": "camera",
+     "iconName": "Camera",
       "products": [
         {
           "id": "wyze-cam-v4",
@@ -90,7 +90,7 @@
       "id": "plan",
       "stepNumber": 2,
       "title": "Choose your plan",
-      "icon": "shield",
+      "iconName": "ShieldCheck",
       "products": [
         {
           "id": "cam-unlimited",
@@ -111,7 +111,7 @@
       "id": "sensors",
       "stepNumber": 3,
       "title": "Choose your sensors",
-      "icon": "sensor",
+      "iconName": "Radio",
       "products": [
         {
           "id": "wyze-sense-motion-sensor",
@@ -145,7 +145,7 @@
       "id": "accessories",
       "stepNumber": 4,
       "title": "Add extra accessories",
-      "icon": "grid",
+      "iconName": "ShieldAlert",
       "products": [
         {
           "id": "wyze-microsd-256gb",

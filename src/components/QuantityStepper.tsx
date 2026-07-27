@@ -1,7 +1,10 @@
+
+
 import React from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { isStepperDecreaseDisabled } from "@/lib/helpers";
+import { STEPPER } from "@/lib/constants";
 
 interface QuantityStepperProps {
   quantity: number;
@@ -19,19 +22,25 @@ export const QuantityStepper: React.FC<QuantityStepperProps> = ({
   const isDisabled = isStepperDecreaseDisabled(quantity, min);
 
   return (
-    <div className="flex items-center gap-2 select-none">
+    <div 
+      style={{ gap: STEPPER.CONTAINER_GAP }} 
+      className="flex items-center select-none"
+    >
       <Button
         type="button"
         variant="ghost"
         size="icon"
         onClick={onDecrease}
         disabled={isDisabled}
-        className="h-5 w-5 p-0 rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading disabled:opacity-30 disabled:pointer-events-none"
+        className="h-5 w-5 p-[2px] rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
       >
-        <Minus className="h-3 w-3 stroke-[2.4]" />
+        <Minus className="w-4 h-4 stroke-[2.4]" />
       </Button>
 
-      <span className="w-4 text-center text-[14px] font-bold leading-none text-brand-heading">
+      <span 
+        style={{ minWidth: STEPPER.COUNTER_MIN_WIDTH }}
+        className="text-center text-[14px] font-bold leading-none text-brand-heading"
+      >
         {quantity}
       </span>
 
@@ -40,9 +49,9 @@ export const QuantityStepper: React.FC<QuantityStepperProps> = ({
         variant="ghost"
         size="icon"
         onClick={onIncrease}
-        className="h-5 w-5 p-0 rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading"
+        className="h-5 w-5 p-[2px] rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading cursor-pointer"
       >
-        <Plus className="h-3 w-3 stroke-[2.4]" />
+        <Plus className="w-4 h-4 stroke-[2.4]" />
       </Button>
     </div>
   );

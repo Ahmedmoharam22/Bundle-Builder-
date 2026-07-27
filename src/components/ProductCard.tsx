@@ -1,3 +1,6 @@
+
+
+
 import React from "react";
 import { useProductCard } from "@/hooks/useProductCard";
 import type { Product } from "@/types/product";
@@ -29,18 +32,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         borderRadius: CARD.RADIUS,
       }}
       className={[
-        "relative flex items-start w-full bg-white",
+        "relative flex items-start w-full bg-white transition-colors duration-150",
         isSelected
           ? "border-2 border-brand-primary"
           : "border border-[#E5E7EB]",
       ].join(" ")}
     >
       {/* ── Left column: badge + image ─────────────────────────── */}
-      <div className="flex flex-col items-center w-[100px] shrink-0 h-full gap-1">
+      <div 
+        style={{ width: CARD.IMAGE_COL_WIDTH }} 
+        className="flex flex-col items-center shrink-0 h-full gap-1"
+      >
         {/* Badge */}
-        <div className="self-start h-[22px]">
+        <div style={{ height: CARD.BADGE_HEIGHT }} className="self-start flex items-center">
           {product.discountBadge && (
-            <span className="bg-brand-primary text-white text-[10px] font-medium px-2.5 py-1 rounded-full">
+            <span className="bg-brand-primary text-white text-[10px] font-medium px-2.5 py-0.5 rounded-full leading-none">
               {product.discountBadge}
             </span>
           )}
@@ -53,7 +59,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className="max-h-[110px] max-w-full object-contain"
+            style={{ maxHeight: CARD.IMAGE_MAX_HEIGHT }}
+            className="max-w-full object-contain mx-auto"
           />
         </div>
       </div>
@@ -62,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="flex flex-col justify-between flex-1 h-full min-w-0 min-h-[151px]">
         {/* Title & description */}
         <div>
-          <h3 className="font-bold text-brand-heading text-base leading-tight">
+          <h3 className="font-bold text-brand-heading text-[16px] leading-tight">
             {product.name}
           </h3>
           <p className="text-[12px] text-brand-body leading-snug mt-1 line-clamp-2">
@@ -72,7 +79,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 href={product.learnMoreUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-link underline hover:text-brand-link-hover"
+                className="text-brand-link underline hover:text-brand-link-hover font-normal"
               >
                 Learn More
               </a>
@@ -82,7 +89,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Variant chips */}
         {product.variants && product.variants.length > 0 && (
-          <div className="flex items-center gap-1.5 flex-wrap mt-1">
+          <div className="flex items-center gap-[6px] flex-wrap mt-1">
             {product.variants.map((variant) => {
               const isActive = activeVariantId === variant.id;
               return (
@@ -91,9 +98,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   type="button"
                   onClick={() => setActiveVariant(product.id, variant.id)}
                   className={[
-                    "flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-[4px] border",
+                    "flex items-center gap-1 text-[11px] px-2 py-1 rounded-[4px] border cursor-pointer transition-colors duration-150",
                     isActive
-                      ? "border-emerald-500 bg-emerald-50/20 text-brand-heading"
+                      ? "border-emerald-500 bg-emerald-50/20 text-brand-heading font-medium"
                       : "border-gray-300 text-brand-heading hover:bg-gray-50",
                   ].join(" ")}
                 >
@@ -124,7 +131,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {formatPrice(product.basePrice)}
               </span>
             )}
-            <span className="text-base font-bold text-brand-price">
+            <span className="text-[16px] font-bold text-brand-price">
               {formatPrice(product.salePrice)}
             </span>
           </div>

@@ -95,12 +95,21 @@
         {
           "id": "cam-unlimited",
           "name": "Cam Unlimited",
-          "description": "Unlimited cameras, 24/7 continuous recording, and AI detection.",
+          "subtitle": "Covers all your cameras",
+          "price": 9.99,
+          "billing": "/mo",
+          "description": "Everything in Cam Plus, and:",
+          "features": [
+            "The brand-new multi-cam timeline for live view and events",
+            "Smart Arm/Disarm modes",
+            "Friendly Faces detection and unknown faces alerts",
+            "Animated Alerts"
+          ],
           "learnMoreUrl": "https://www.wyze.com/pages/cam-plus",
           "discountBadge": "Popular",
           "basePrice": 12.99,
           "salePrice": 9.99,
-          "image": "/images/cam-unlimited.webp",
+          "image": "/images/cam-unlimit.webp",
           "category": "plan",
           "isMonthly": true,
           "variants": []

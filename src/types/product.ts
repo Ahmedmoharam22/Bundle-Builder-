@@ -43,3 +43,16 @@ export interface ProductsData {
   categories: Category[];
   initialSelectedItems: Record<string, CartItemSeed>;
 }
+
+export interface PlanItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  price: number;
+  billing: string;
+  description: string;
+  features: string[];
+  learnMoreUrl?: string;
+  category: "plan";
+  isMonthly?: boolean;
+}

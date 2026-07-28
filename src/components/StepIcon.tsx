@@ -6,7 +6,6 @@ import {
   ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
-
 const iconMap: Record<string, LucideIcon> = {
   Camera,
   ShieldCheck,
@@ -21,7 +20,7 @@ interface StepIconProps {
 
 export const StepIcon: React.FC<StepIconProps> = ({
   name,
-  className = "w-5 h-5 text-indigo-600",
+  className = "w-5 h-5 text-brand-icon",
 }) => {
   const IconComponent = iconMap[name] || Camera;
 

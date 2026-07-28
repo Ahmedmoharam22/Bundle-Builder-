@@ -1,7 +1,8 @@
 
 
-import React from "react";
+import React, { useCallback } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { StepIcon } from "./StepIcon";
 import { useBundleStore } from "@/store/useBundleStore";
 import { Button } from "@/components/ui/button";
 import { ACCORDION } from "@/lib/constants";
@@ -12,27 +13,29 @@ interface AccordionStepProps {
   totalSteps?: number;
   title: string;
   categoryId: string;
-  icon?: React.ReactNode;
+  iconName?: string;
   children?: React.ReactNode;
   nextStepTitle?: string;
 }
 
-export const AccordionStep: React.FC<AccordionStepProps> = ({
+const AccordionStepInner: React.FC<AccordionStepProps> = ({
   stepNumber,
   totalSteps = 4,
   title,
   categoryId,
-  icon,
+  iconName,
   children,
   nextStepTitle,
 }) => {
-  const { openStep, setOpenStep, getStepSelectedCount } = useBundleStore();
+  const openStep = useBundleStore((s) => s.openStep);
+  const setOpenStep = useBundleStore((s) => s.setOpenStep);
+  // Inline the derived count so this step only re-renders when ITS category count changes
+  const selectedCount = useBundleStore((s) => s.getStepSelectedCount(categoryId));
   const isOpen = openStep === stepNumber;
-  const selectedCount = getStepSelectedCount(categoryId);
 
-  const toggleAccordion = () => {
+  const toggleAccordion = useCallback(() => {
     setOpenStep(getNextAccordionState(openStep as number, stepNumber));
-  };
+  }, [openStep, stepNumber, setOpenStep]);
 
   return (
     <div 
@@ -48,7 +51,7 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
       >
         {/* Left: icon + step label + title */}
         <div className="flex items-center gap-3">
-          {icon && <span className="text-brand-heading shrink-0">{icon}</span>}
+          {iconName && <span className="text-brand-heading shrink-0"><StepIcon name={iconName} /></span>}
           <div className="flex flex-col text-left">
             <span className="text-[11px] font-bold tracking-wider text-brand-price uppercase leading-none">
               {formatStepHeader(stepNumber, totalSteps)}
@@ -78,7 +81,7 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
       {isOpen && (
         <div 
           style={{ padding: ACCORDION.PADDING }} 
-          className="border-t border-gray-100"
+          className="border-t border-gray-100 bg-brand-bg"
         >
           {/* 2-column card grid (Last card starts left and doesn't stretch) */}
           <div 
@@ -109,3 +112,5 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
     </div>
   );
 };
+
+export const AccordionStep = React.memo(AccordionStepInner);

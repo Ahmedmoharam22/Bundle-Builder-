@@ -1,9 +1,8 @@
-
-
 import React from "react";
 import type { MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/helpers";
+import { GUARANTEE_BADGE_IMAGE } from "@/lib/images";
 
 interface ReviewSummaryProps {
   subtotal: number;
@@ -13,6 +12,8 @@ interface ReviewSummaryProps {
   savingsMessage: string;
   handleSaveForLater: (e: MouseEvent) => void;
 }
+
+
 
 export const ReviewSummary: React.FC<ReviewSummaryProps> = ({
   subtotal,
@@ -25,16 +26,19 @@ export const ReviewSummary: React.FC<ReviewSummaryProps> = ({
   return (
     <div className="mt-auto border-t border-gray-200/80 pt-4 space-y-3">
       <div className="flex items-end justify-between">
-        {/* Guarantee Badge (80px x 80px) */}
         <div className="shrink-0">
           <img
-            src="/images/badge-satisfaction.webp"
+            src={GUARANTEE_BADGE_IMAGE.src}
             alt="100% Wyze satisfaction guarantee"
+            width={GUARANTEE_BADGE_IMAGE.width}
+            height={GUARANTEE_BADGE_IMAGE.height}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             className="w-20 h-20 object-contain"
           />
         </div>
 
-        {/* Pricing Info */}
         <div className="flex flex-col items-end gap-1">
           {total > 0 && (
             <span className="bg-brand-primary text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md">
@@ -61,7 +65,6 @@ export const ReviewSummary: React.FC<ReviewSummaryProps> = ({
         </div>
       )}
 
-      {/* Checkout Button (350px x 48px, radius: 4px) */}
       <Button className="w-full max-w-[350px] h-[48px] mx-auto bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-sm rounded-[4px] flex items-center justify-center cursor-pointer transition-colors">
         Checkout
       </Button>

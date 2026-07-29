@@ -1,13 +1,13 @@
 
 import React from "react";
 import { useReviewPanel } from "@/hooks/useReviewPanel";
-import { ReviewCategory } from "./review/ReviewCategory";
+import ReviewCategory from "./review/ReviewCategory";
 import { ReviewSummary } from "./review/ReviewSummary";
 import { Button } from "@/components/ui/button";
 import { Truck } from "lucide-react";
 import { PANEL } from "@/lib/constants";
 
-export const ReviewPanel: React.FC = () => {
+export  const ReviewPanel: React.FC = () => {
   const {
     groupedItems,
     subtotal,
@@ -95,3 +95,4 @@ export const ReviewPanel: React.FC = () => {
     </div>
   );
 };
+

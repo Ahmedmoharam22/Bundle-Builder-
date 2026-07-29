@@ -1,18 +1,38 @@
-
-
-
 import React from "react";
 import { useProductCard } from "@/hooks/useProductCard";
 import type { Product } from "@/types/product";
 import { QuantityStepper } from "./QuantityStepper";
 import { CARD } from "@/lib/constants";
 import { formatPrice } from "@/lib/helpers";
+import {
+  PRODUCT_CARD_IMAGE_DIMENSIONS,
+  getProductCardImageSrc,
+} from "@/lib/images";
 
 interface ProductCardProps {
   product: Product;
+  imagePriority?: boolean;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const cardStyle = {
+  maxWidth: CARD.WIDTH,
+  minHeight: CARD.MIN_HEIGHT,
+  padding: CARD.PADDING,
+  gap: CARD.GAP,
+  borderRadius: CARD.RADIUS,
+};
+
+const imageColumnStyle = { width: CARD.IMAGE_COL_WIDTH };
+const badgeStyle = { height: CARD.BADGE_HEIGHT };
+const imageStyle = {
+  width: `${PRODUCT_CARD_IMAGE_DIMENSIONS.width}px`,
+  height: `${PRODUCT_CARD_IMAGE_DIMENSIONS.height}px`,
+};
+
+const ProductCardInner: React.FC<ProductCardProps> = ({
+  product,
+  imagePriority = false,
+}) => {
   const {
     activeVariantId,
     activeQuantity,
@@ -21,16 +41,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     handleDecrease,
     setActiveVariant,
   } = useProductCard(product);
+  const imageSrc = getProductCardImageSrc(product.image);
 
   return (
     <div
-      style={{
-        maxWidth: CARD.WIDTH,
-        minHeight: CARD.MIN_HEIGHT,
-        padding: CARD.PADDING,
-        gap: CARD.GAP,
-        borderRadius: CARD.RADIUS,
-      }}
+      style={cardStyle}
       className={[
         "relative flex items-start w-full bg-white transition-colors duration-150",
         isSelected
@@ -38,13 +53,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           : "border border-[#E5E7EB]",
       ].join(" ")}
     >
-      {/* ── Left column: badge + image ─────────────────────────── */}
-      <div 
-        style={{ width: CARD.IMAGE_COL_WIDTH }} 
+      <div
+        style={imageColumnStyle}
         className="flex flex-col items-center shrink-0 h-full gap-1"
       >
-        {/* Badge */}
-        <div style={{ height: CARD.BADGE_HEIGHT }} className="self-start flex items-center">
+        <div style={badgeStyle} className="self-start flex items-center">
           {product.discountBadge && (
             <span className="bg-brand-primary text-white text-[10px] font-medium px-2.5 py-0.5 rounded-full leading-none">
               {product.discountBadge}
@@ -52,22 +65,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* Product image */}
         <div className="flex flex-1 items-center justify-center w-full">
           <img
-            src={product.image}
+            src={imageSrc}
             alt={product.name}
-            loading="lazy"
+            width={PRODUCT_CARD_IMAGE_DIMENSIONS.width}
+            height={PRODUCT_CARD_IMAGE_DIMENSIONS.height}
+            loading={imagePriority ? "eager" : "lazy"}
+            fetchPriority={imagePriority ? "high" : "auto"}
             decoding="async"
-            style={{ maxHeight: CARD.IMAGE_MAX_HEIGHT }}
-            className="max-w-full object-contain mx-auto"
+            style={imageStyle}
+            className="object-contain mx-auto"
           />
         </div>
       </div>
 
-      {/* ── Right column: text + controls ──────────────────────── */}
       <div className="flex flex-col justify-between flex-1 h-full min-w-0 min-h-[151px]">
-        {/* Title & description */}
         <div>
           <h3 className="font-bold text-brand-heading text-[16px] leading-tight">
             {product.name}
@@ -87,7 +100,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
         </div>
 
-        {/* Variant chips */}
         {product.variants && product.variants.length > 0 && (
           <div className="flex items-center gap-[6px] flex-wrap mt-1">
             {product.variants.map((variant) => {
@@ -117,7 +129,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
 
-        {/* Bottom row: stepper (left) + price (right) */}
         <div className="flex items-end justify-between mt-auto pt-1">
           <QuantityStepper
             quantity={activeQuantity}
@@ -140,3 +151,5 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     </div>
   );
 };
+
+export const ProductCard = React.memo(ProductCardInner);

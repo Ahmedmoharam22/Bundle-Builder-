@@ -1,40 +1,52 @@
-
-
-import React from "react";
+import React, { useCallback } from "react";
 import type { CartItem } from "@/store/useBundleStore";
 import type { Product } from "@/types/product";
 import { QuantityStepper } from "../QuantityStepper";
 import { formatPrice, isPlanCategory } from "@/lib/helpers";
+import {
+  REVIEW_THUMBNAIL_IMAGE_DIMENSIONS,
+  getReviewThumbnailImageSrc,
+} from "@/lib/images";
 
 interface ReviewItemProps {
   item: CartItem;
   product: Product;
   categoryName: string;
-  onIncrease: () => void;
-  onDecrease: () => void;
+  setQuantity: (productId: string, variantId: string | null, quantity: number) => void;
 }
 
-export const ReviewItem: React.FC<ReviewItemProps> = ({
+const ReviewItemInner: React.FC<ReviewItemProps> = ({
   item,
   product,
   categoryName,
-  onIncrease,
-  onDecrease,
+  setQuantity,
 }) => {
   const variant = product.variants?.find((v) => v.id === item.variantId);
   const displayName = product.name;
   const isFree = product.salePrice === 0;
   const isPlan = isPlanCategory(categoryName);
+  const imageSrc = getReviewThumbnailImageSrc(product.image);
+
+  const handleIncrease = useCallback(() => {
+    setQuantity(item.productId, item.variantId, item.quantity + 1);
+  }, [item.productId, item.quantity, item.variantId, setQuantity]);
+
+  const handleDecrease = useCallback(() => {
+    setQuantity(item.productId, item.variantId, item.quantity - 1);
+  }, [item.productId, item.quantity, item.variantId, setQuantity]);
 
   return (
     <div className="flex items-center justify-between text-xs">
-      {/* Product Image (36px x 36px) & Title */}
       <div className="flex items-center gap-2.5 max-w-[170px]">
         <div className="w-9 h-9 shrink-0 bg-white rounded-lg p-1 border border-gray-100 flex items-center justify-center overflow-hidden">
           <img
-            src={product.image}
+            src={imageSrc}
             alt={displayName}
-            className="max-h-full max-w-full object-contain"
+            width={REVIEW_THUMBNAIL_IMAGE_DIMENSIONS.width}
+            height={REVIEW_THUMBNAIL_IMAGE_DIMENSIONS.height}
+            loading="lazy"
+            decoding="async"
+            className="h-9 w-9 object-contain"
           />
         </div>
         <div>
@@ -49,13 +61,12 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
         </div>
       </div>
 
-      {/* Stepper + Price */}
       <div className="flex items-center gap-3">
         {!isPlan && (
           <QuantityStepper
             quantity={item.quantity}
-            onIncrease={onIncrease}
-            onDecrease={onDecrease}
+            onIncrease={handleIncrease}
+            onDecrease={handleDecrease}
           />
         )}
 
@@ -93,3 +104,5 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
     </div>
   );
 };
+
+export const ReviewItem = React.memo(ReviewItemInner);

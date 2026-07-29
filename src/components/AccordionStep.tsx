@@ -46,6 +46,8 @@ const AccordionStepInner: React.FC<AccordionStepProps> = ({
       <button
         type="button"
         onClick={toggleAccordion}
+        aria-expanded={isOpen}
+        aria-controls={`step-content-${stepNumber}`}
         style={{ padding: ACCORDION.HEADER_PADDING }}
         className="w-full flex items-center justify-between hover:bg-gray-50/50 transition-colors cursor-pointer"
       >
@@ -80,6 +82,8 @@ const AccordionStepInner: React.FC<AccordionStepProps> = ({
       {/* ── Content ─────────────────────────────────────────────── */}
       {isOpen && (
         <div 
+          id={`step-content-${stepNumber}`}
+          role="region"
           style={{ padding: ACCORDION.PADDING }} 
           className="border-t border-gray-100 bg-brand-bg"
         >

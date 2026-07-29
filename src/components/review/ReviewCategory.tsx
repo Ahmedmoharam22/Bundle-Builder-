@@ -1,8 +1,6 @@
-
-
 import React from "react";
 import type { GroupedItem } from "@/lib/review";
-import { ALL_PRODUCTS } from "@/lib/review";
+import { productMap } from "@/data/products";
 import { ReviewItem } from "./ReviewItem";
 
 interface ReviewCategoryProps {
@@ -10,7 +8,7 @@ interface ReviewCategoryProps {
   setQuantity: (productId: string, variantId: string | null, quantity: number) => void;
 }
 
-export const ReviewCategory: React.FC<ReviewCategoryProps> = ({
+const ReviewCategoryInner: React.FC<ReviewCategoryProps> = ({
   group,
   setQuantity,
 }) => {
@@ -22,7 +20,7 @@ export const ReviewCategory: React.FC<ReviewCategoryProps> = ({
 
       <div className="space-y-3 pt-1">
         {group.items.map(({ key, item }) => {
-          const product = ALL_PRODUCTS.find((p) => p.id === item.productId);
+          const product = productMap.get(item.productId);
           if (!product) return null;
 
           return (
@@ -31,12 +29,7 @@ export const ReviewCategory: React.FC<ReviewCategoryProps> = ({
               item={item}
               product={product}
               categoryName={group.categoryName}
-              onIncrease={() =>
-                setQuantity(item.productId, item.variantId, item.quantity + 1)
-              }
-              onDecrease={() =>
-                setQuantity(item.productId, item.variantId, item.quantity - 1)
-              }
+              setQuantity={setQuantity}
             />
           );
         })}
@@ -44,3 +37,6 @@ export const ReviewCategory: React.FC<ReviewCategoryProps> = ({
     </div>
   );
 };
+
+export const ReviewCategory = React.memo(ReviewCategoryInner);
+export default ReviewCategory;

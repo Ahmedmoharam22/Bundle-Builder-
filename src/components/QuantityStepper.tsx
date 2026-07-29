@@ -28,13 +28,12 @@ export const QuantityStepper: React.FC<QuantityStepperProps> = ({
     >
       <Button
         type="button"
-        variant="ghost"
-        size="icon"
         onClick={onDecrease}
         disabled={isDisabled}
-        className="h-5 w-5 p-[2px] rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+        aria-label="Decrease quantity"
+        title="Decrease quantity"
       >
-        <Minus className="w-4 h-4 stroke-[2.4]" />
+        <Minus aria-hidden="true" className="h-4 w-4" />
       </Button>
 
       <span 
@@ -46,12 +45,11 @@ export const QuantityStepper: React.FC<QuantityStepperProps> = ({
 
       <Button
         type="button"
-        variant="ghost"
-        size="icon"
         onClick={onIncrease}
-        className="h-5 w-5 p-[2px] rounded-none bg-transparent shadow-none hover:bg-transparent text-brand-heading cursor-pointer"
+        aria-label="Increase quantity"
+        title="Increase quantity"
       >
-        <Plus className="w-4 h-4 stroke-[2.4]" />
+        <Plus aria-hidden="true" className="h-4 w-4" />
       </Button>
     </div>
   );

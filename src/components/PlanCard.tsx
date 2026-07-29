@@ -6,7 +6,7 @@ interface PlanCardProps {
   plan: PlanItem;
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({ plan }) => {
+const PlanCardInner: React.FC<PlanCardProps> = ({ plan }) => {
   const name = plan?.name || "";
   const words = name.split(" ");
   const firstWord = words[0] || "";
@@ -70,4 +70,5 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan }) => {
   );
 };
 
+export const PlanCard = React.memo(PlanCardInner);
 export default PlanCard;

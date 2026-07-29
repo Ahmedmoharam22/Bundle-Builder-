@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from "react";
 import type { MouseEvent } from "react";
 import { useBundleStore } from "@/store/useBundleStore";
 import { getGroupedItems } from "@/lib/review";
@@ -18,18 +19,21 @@ export interface UseReviewPanelReturn {
 }
 
 export const useReviewPanel = (): UseReviewPanelReturn => {
-  const { items, getTotals, clearCart, setQuantity } = useBundleStore();
+  const items = useBundleStore((s) => s.items);
+  const getTotals = useBundleStore((s) => s.getTotals);
+  const clearCart = useBundleStore((s) => s.clearCart);
+  const setQuantity = useBundleStore((s) => s.setQuantity);
   const { subtotal, total, savings } = getTotals();
 
-  const groupedItems = getGroupedItems(items);
+  const groupedItems = useMemo(() => getGroupedItems(items), [items]);
   const hasItems = Object.keys(items).length > 0;
   const monthlyPayment = calculateMonthlyPayment(total);
   const savingsMessage = formatSavingsMessage(savings);
 
-  const handleSaveForLater = (e: MouseEvent) => {
+  const handleSaveForLater = useCallback((e: MouseEvent) => {
     e.preventDefault();
     alert("Your system configuration has been saved successfully!");
-  };
+  }, []);
 
   return {
     groupedItems,

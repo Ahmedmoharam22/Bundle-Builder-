@@ -1,26 +1,14 @@
-import productsData from './data/products.json';
-import { ProductCard } from './components/ProductCard';
-import { GLOBAL_LAYOUT } from './lib/constants';
-import { lazy, Suspense } from "react";
-import type { PlanItem } from './types/product';
+import productsData from "./data/products.json";
+import { ProductCard } from "./components/ProductCard";
+import { AccordionStep } from "./components/AccordionStep";
+import { PlanCard } from "./components/PlanCard";
+import { ReviewPanel } from "./components/ReviewPanel";
+import { GLOBAL_LAYOUT } from "./lib/constants";
+import type { PlanItem } from "./types/product";
 
-const AccordionStep = lazy(() =>
-  import("./components/AccordionStep").then((m) => ({
-    default: m.AccordionStep,
-  }))
-);
-
-const ReviewPanel = lazy(() =>
-  import("./components/ReviewPanel").then((m) => ({
-    default: m.ReviewPanel,
-  }))
-);
-
-const PlanCard = lazy(() => import("./components/PlanCard"));
-
-export default function App() {
+export function App() {
   return (
-    <div
+    <main
       style={{
         paddingTop: GLOBAL_LAYOUT.PADDING_TOP,
         paddingLeft: GLOBAL_LAYOUT.PADDING_X,
@@ -36,42 +24,43 @@ export default function App() {
           style={{ gap: GLOBAL_LAYOUT.GAP }}
           className="grid grid-cols-1 lg:grid-cols-12 items-start"
         >
-          {/* Each column has its own Suspense — they render independently */}
           <div className="lg:col-span-8">
-            <Suspense fallback={null}>
-              {productsData.categories.map((category, index) => (
-                <AccordionStep
-                  key={category.id}
-                  stepNumber={category.stepNumber}
-                  title={category.title}
-                  categoryId={category.id}
-                  iconName={category.iconName}
-                  nextStepTitle={productsData.categories[index + 1]?.title}
-                >
-                  {(category.products || []).map((product) => {
-                    const isPlan =
-                      category.id === "plan" ||
-                      category.id === "monitoring" ||
-                      (product as any).category === "plan";
+            {productsData.categories.map((category, index) => (
+              <AccordionStep
+                key={category.id}
+                stepNumber={category.stepNumber}
+                title={category.title}
+                categoryId={category.id}
+                iconName={category.iconName}
+                nextStepTitle={productsData.categories[index + 1]?.title}
+              >
+                {(category.products || []).map((product, productIndex) => {
+                  const isPlan =
+                    category.id === "plan" ||
+                    category.id === "monitoring" ||
+                    (product as any).category === "plan";
 
-                    return isPlan ? (
-                      <PlanCard key={product.id} plan={product as unknown as PlanItem} />
-                    ) : (
-                      <ProductCard key={product.id} product={product as any} />
-                    );
-                  })}
-                </AccordionStep>
-              ))}
-            </Suspense>
+                  return isPlan ? (
+                    <PlanCard key={product.id} plan={product as unknown as PlanItem} />
+                  ) : (
+                    <ProductCard
+                      key={product.id}
+                      product={product as any}
+                      imagePriority={category.stepNumber === 1 && productIndex < 2}
+                    />
+                  );
+                })}
+              </AccordionStep>
+            ))}
           </div>
 
           <div className="lg:col-span-4">
-            <Suspense fallback={null}>
-              <ReviewPanel />
-            </Suspense>
+            <ReviewPanel />
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
+
+export default App;

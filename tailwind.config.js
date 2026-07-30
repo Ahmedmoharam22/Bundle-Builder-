@@ -16,6 +16,7 @@ export default {
           price: "#575757", // Base Price & Subdued Text
           strike: "#D8392B", // Card Discount Red Strikethrough
           "muted-strike": "#6F7882", // Review Panel Strikethrough Price
+          icon: "#6F7882", // Step Icon Color
         },
       },
         fontFamily: {

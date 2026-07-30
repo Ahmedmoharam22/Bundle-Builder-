@@ -1,8 +1,6 @@
-import productsData from "@/data/products.json";
 import type { CartItem } from "@/store/useBundleStore";
-import { CATEGORY_MAP } from "@/lib/category";
-
-export const ALL_PRODUCTS = productsData.categories.flatMap((c) => c.products);
+import { CATEGORY_MAP, CATEGORY_NAME_BY_ID } from "@/lib/category";
+import { productCategoryIdMap } from "@/data/products";
 
 export interface GroupedItem {
   categoryName: string;
@@ -12,32 +10,27 @@ export interface GroupedItem {
 export const getGroupedItems = (
   items: Record<string, CartItem>,
 ): GroupedItem[] => {
-  return CATEGORY_MAP.map((catGroup) => {
-    const catItems = Object.entries(items)
-      .filter(([, item]) => {
-        const product = ALL_PRODUCTS.find((p) => p.id === item.productId);
-        if (!product) return false;
+  const groupedItems = new Map<string, Array<{ key: string; item: CartItem }>>();
 
-        if (
-          product.category &&
-          product.category.toUpperCase() === catGroup.name
-        ) {
-          return true;
-        }
+  Object.entries(items).forEach(([key, item]) => {
+    const productCategoryId = productCategoryIdMap.get(item.productId);
+    if (!productCategoryId) return;
 
-        const parentCategory = productsData.categories.find((c) =>
-          c.products.some((p) => p.id === item.productId),
-        );
+    const categoryName = CATEGORY_NAME_BY_ID.get(productCategoryId);
+    if (!categoryName) return;
 
-        return parentCategory
-          ? catGroup.ids.includes(parentCategory.id.toLowerCase())
-          : false;
-      })
-      .map(([key, item]) => ({ key, item }));
+    const categoryItems = groupedItems.get(categoryName);
+    if (categoryItems) {
+      categoryItems.push({ key, item });
+      return;
+    }
 
-    return {
-      categoryName: catGroup.name,
-      items: catItems,
-    };
-  }).filter((group) => group.items.length > 0);
+    groupedItems.set(categoryName, [{ key, item }]);
+  });
+
+  // O(N) lookup acceptable for current payload size; can be converted to Map O(1) if dataset scales.
+  return CATEGORY_MAP.map((catGroup) => ({
+    categoryName: catGroup.name,
+    items: groupedItems.get(catGroup.name) ?? [],
+  })).filter((group) => group.items.length > 0);
 };

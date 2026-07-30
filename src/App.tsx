@@ -5,7 +5,6 @@ import { PlanCard } from "./components/PlanCard";
 import { ReviewPanel } from "./components/ReviewPanel";
 import { GLOBAL_LAYOUT } from "./lib/constants";
 import type { PlanItem } from "./types/product";
-
 export function App() {
   return (
     <main

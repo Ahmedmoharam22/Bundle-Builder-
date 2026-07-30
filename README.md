@@ -2,9 +2,7 @@
 
 A React implementation of a multi-step security-system bundle builder, built from a provided Figma design. Shoppers pick cameras, a plan, sensors, and add-on protection through a 4-step accordion, with a live review panel that stays in sync on the side.
 
-**Live demo / screenshots:** _(optional — add a Vercel/Netlify link here if you deploy it)_
-
----
+## **Live demo:** Available via local setup below.
 
 ## Tech Stack
 
